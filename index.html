@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="SF-Push - Yuhao Li, Williard Joshua Jose, Hao Zhang">
+  <meta name="description" content="SF-Push forms one policy gradient per robot and per objective, takes its direction from a minimum-norm combination of the unit-normalized gradients and its scale from the task gradient alone, so no trade-off weights are tuned.">
+  <meta name="keywords" content="multi-robot systems, multi-objective reinforcement learning, multi-agent reinforcement learning, quadruped robots, collaborative transport, box pushing, gradient conflict, safety, fairness, MAPPO">
+  <meta name="author" content="Yuhao Li, Williard Joshua Jose, Hao Zhang">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="INSTITUTION_OR_LAB_NAME">
+  <meta property="og:title" content="SF-Push: Safe and Fair Pose-to-Pose Collaborative Transport with Multiple Quadruped Robots">
+  <meta property="og:description" content="SF-Push forms one policy gradient per robot and per objective, takes its direction from a minimum-norm combination of the unit-normalized gradients and its scale from the task gradient alone, so no trade-off weights are tuned.">
+  <meta property="og:url" content="https://chkxw.github.io/sf-push/">
+  <meta property="og:image" content="https://chkxw.github.io/sf-push/static/images/fig1_teaser.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SF-Push: Safe and Fair Pose-to-Pose Collaborative Transport with Multiple Quadruped Robots - Research Preview">
+  <meta property="article:published_time" content="2024-01-01T00:00:00.000Z">
+  <meta property="article:author" content="FIRST_AUTHOR_NAME">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="KEYWORD1">
+  <meta property="article:tag" content="KEYWORD2">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@AUTHOR_TWITTER_HANDLE">
+  <meta name="twitter:title" content="SF-Push: Safe and Fair Pose-to-Pose Collaborative Transport with Multiple Quadruped Robots">
+  <meta name="twitter:description" content="SF-Push forms one policy gradient per robot and per objective, takes its direction from a minimum-norm combination of the unit-normalized gradients and its scale from the task gradient alone, so no trade-off weights are tuned.">
+  <meta name="twitter:image" content="https://chkxw.github.io/sf-push/static/images/fig1_teaser.jpg">
+  <meta name="twitter:image:alt" content="SF-Push: Safe and Fair Pose-to-Pose Collaborative Transport with Multiple Quadruped Robots - Research Preview">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="SF-Push: Safe and Fair Pose-to-Pose Collaborative Transport with Multiple Quadruped Robots">
+  <meta name="citation_author" content="FIRST_AUTHOR_LAST, FIRST_AUTHOR_FIRST">
+  <meta name="citation_author" content="SECOND_AUTHOR_LAST, SECOND_AUTHOR_FIRST">
+  <meta name="citation_publication_date" content="2024">
+  <meta name="citation_conference_title" content="CONFERENCE_NAME">
+  <meta name="citation_pdf_url" content="https://chkxw.github.io/sf-push/">
+  
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <title>SF-Push</title>
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+  
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "SF-Push: Safe and Fair Pose-to-Pose Collaborative Transport with Multiple Quadruped Robots",
+    "description": "SF-Push forms one policy gradient per robot and per objective, takes its direction from a minimum-norm combination of the unit-normalized gradients and its scale from the task gradient alone, so no trade-off weights are tuned.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "FIRST_AUTHOR_NAME",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "INSTITUTION_NAME"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "SECOND_AUTHOR_NAME",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "INSTITUTION_NAME"
+        }
+      }
+    ],
+    "datePublished": "2024-01-01",
+    "publisher": {
+      "@type": "Organization",
+      "name": "CONFERENCE_OR_JOURNAL_NAME"
+    },
+    "url": "https://chkxw.github.io/sf-push/",
+    "image": "https://chkxw.github.io/sf-push/static/images/fig1_teaser.jpg",
+    "keywords": ["KEYWORD1", "KEYWORD2", "KEYWORD3", "machine learning", "computer vision"],
+    "abstract": "SF-Push forms one policy gradient per robot and per objective, takes its direction from a minimum-norm combination of the unit-normalized gradients and its scale from the task gradient alone, so no trade-off weights are tuned.",
+    "citation": "Li, Y., Jose, W. J., and Zhang, H. SF-Push: Safe and Fair Pose-to-Pose Collaborative Transport with Multiple Quadruped Robots. Under review, 2026.",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "mainEntity": {
+      "@type": "WebPage",
+      "@id": "https://chkxw.github.io/sf-push/"
+    },
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "RESEARCH_AREA_1"
+      },
+      {
+        "@type": "Thing", 
+        "name": "RESEARCH_AREA_2"
+      }
+    ]
+  }
+  </script>
+  
+  <!-- Website/Organization Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "INSTITUTION_OR_LAB_NAME",
+    "url": "https://hcr.cs.umass.edu/",
+    "logo": "https://chkxw.github.io/sf-push/static/images/favicon.ico",
+    "sameAs": [
+      "https://github.com/chkxw"
+    ]
+  }
+  </script>
+  <style>
+    .results-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .results-table th.num { text-align: right; }
+    .results-table { font-size: 0.86rem; }
+    .publication-title + .subtitle { color: #4a4a4a; margin-top: .6rem !important; }
+    .headline-stats .title + .subtitle { margin-top: .5rem !important; }
+    .headline-stats .subtitle { line-height: 1.45; }
+  </style>
+</head>
+<body>
+
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">SF-Push</h1>
+            <h2 class="subtitle is-4" style="margin-bottom:1.2rem;">Safe and Fair Pose-to-Pose Collaborative Transport<br>with Multiple Quadruped Robots</h2>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Yuhao Li,</span>
+              <span class="author-block">Williard Joshua Jose,</span>
+              <span class="author-block">Hao Zhang</span>
+            </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Human-Centered Robotics Lab, University of Massachusetts Amherst<br>
+              <i>Under review at ICRA 2027</i></span>
+            </div>
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="#video" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-video"></i></span>
+                    <span>Supplementary Video</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Headline numbers -->
+<section class="hero is-small headline-stats">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <p class="title is-2" style="margin-bottom:.2rem;">94.9%</p>
+          <p class="subtitle is-6">success on the hardest goals<br><span class="has-text-grey">strongest baseline: 56.7%</span></p>
+        </div>
+        <div class="column">
+          <p class="title is-2" style="margin-bottom:.2rem;">88%</p>
+          <p class="subtitle is-6">of the hardware run with both robots engaged<br><span class="has-text-grey">weighted sum: 52%</span></p>
+        </div>
+        <div class="column">
+          <p class="title is-2" style="margin-bottom:.2rem;">0.60 m</p>
+          <p class="subtitle is-6">minimum inter-robot separation<br><span class="has-text-grey">weighted sum: 0.37 m, inside the 0.5 m limit</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End headline numbers -->
+
+<!-- Teaser -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <article class="message is-warning">
+        <div class="message-body">
+          <b>This figure shows the baseline, not our method.</b> It is what a hand-weighted scalar
+          reward does on hardware: the box still reaches every waypoint, but the robots close inside
+          the safety distance and one of them stops contributing.
+        </div>
+      </article>
+      <img src="static/images/fig1_teaser.jpg" alt="Top-down composite of two Unitree Go1 robots pushing a box through waypoints under a weighted-sum reward, with panels showing inter-robot distance crossing the safety threshold and unbalanced per-robot engagement."/>
+      <h2 class="subtitle has-text-centered">
+        A hand-weighted scalar reward can complete the waypoint task while producing unsafe and
+        unbalanced collaboration on hardware. <b>Left:</b> two Unitree Go1 robots push a box through
+        target poses WP0&ndash;WP3 under a weighted sum of task, safety and fairness rewards.
+        <b>Right, top:</b> the inter-robot distance crosses the 0.5&nbsp;m safety threshold four times,
+        down to 0.37&nbsp;m. <b>Bottom:</b> during WP0&rarr;WP1, R1 is engaged for 96.7% of the segment
+        against 40.8% for R2. The box still reaches every target pose &mdash; this is not a team stalled
+        by miscoordination, but a policy that completes the task while one robot contributes little.
+        On the same course SF-Push keeps both robots engaged for 91% and 93% of the run and never
+        comes closer than 0.60&nbsp;m.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Collaborative box pushing by multiple quadrupeds requires the team to reach a target pose,
+            stay safely apart, and keep both robots engaged. Safety and contribution fairness restrict
+            how the team moves without rewarding task completion, so a scalar reward must fix their
+            trade-off with task progress in advance, and with hand-tuned weights both failures appear:
+            one robot disengages for long stretches, and when both push they come closer than the
+            safety distance despite the penalty. We formulate collaborative pushing as a multi-agent
+            multi-objective MDP whose objectives play different roles in the policy update, and train a
+            shared policy with SF-Push, which forms one policy gradient per (robot, objective) pair,
+            takes its direction from a minimum-norm combination of all the unit-normalized gradients,
+            and its scale from the summed task gradient alone, so no trade-off weights are tuned. In
+            simulation SF-Push reaches 99.6% success on nominal goals against 69.1%, 97.3% and 90.6%
+            for a weighted sum, ConFIG and GCR-PPO, with the least time in unsafe proximity of any
+            method on those goals, and keeps 94.9% on the hardest goals, where the strongest baseline
+            reaches 56.7%. On two Unitree Go1 robots SF-Push keeps both engaged for 88% of a
+            three-waypoint course at a minimum separation of 0.60 m, while the weighted-sum policy
+            alternates which robot pushes, keeps both engaged for only 52%, and closes to 0.37 m,
+            inside the 0.5 m requirement.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+
+<!-- Results -->
+<section class="section hero">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">Simulation results</h2>
+    <p>
+      Collaborative pose-to-pose pushing across three goal settings. Mean ± std over independent
+      training runs. All methods combine the same twelve per-(robot, objective) gradients under
+      identical rewards, critic and hyperparameters, so only the combination rule differs.
+      Bold marks the best value per setting &mdash; SF-Push does not lead on every column.
+    </p>
+    <div class="table-container">
+    <table class="table is-fullwidth is-narrow results-table">
+      <thead><tr><th>Setting</th><th>Method</th><th class="num">Success (%) &uarr;</th><th class="num">Time (s) &darr;</th><th class="num">Unsafe prox. (%) &darr;</th><th class="num">Work balance &uarr;</th><th class="num">Min. dist. (m) &uarr;</th></tr></thead>
+      <tbody>
+      <tr><td rowspan="4" style="vertical-align:middle;"><b>Easy<br><small class='has-text-grey'>0.9 m, 30&ndash;60&deg;</small></b></td><td>Weighted Sum</td><td class="num">96.39 ± 2.11</td><td class="num"><b>2.63 ± 0.04</b></td><td class="num">4.230 ± 5.135</td><td class="num">0.656 ± 0.029</td><td class="num">0.355 ± 0.053</td></tr>
+      <tr><td>ConFIG</td><td class="num">95.14 ± 2.68</td><td class="num">3.44 ± 0.05</td><td class="num">0.128 ± 0.094</td><td class="num"><b>0.661 ± 0.054</b></td><td class="num">0.394 ± 0.081</td></tr>
+      <tr><td>GCR-PPO</td><td class="num">94.02 ± 2.96</td><td class="num">2.82 ± 0.43</td><td class="num">1.998 ± 0.563</td><td class="num">0.649 ± 0.068</td><td class="num">0.312 ± 0.043</td></tr>
+      <tr style="background:#f5f5f5;"><td><b>SF-Push</b></td><td class="num"><b>98.53 ± 0.76</b></td><td class="num">4.41 ± 0.52</td><td class="num"><b>0.062 ± 0.022</b></td><td class="num">0.660 ± 0.023</td><td class="num"><b>0.406 ± 0.081</b></td></tr>
+      <tr><td rowspan="4" style="vertical-align:middle;"><b>Normal<br><small class='has-text-grey'>1.8 m, 90&ndash;120&deg;</small></b></td><td>Weighted Sum</td><td class="num">69.09 ± 24.27</td><td class="num">5.49 ± 0.77</td><td class="num">3.588 ± 4.952</td><td class="num">0.771 ± 0.013</td><td class="num">0.342 ± 0.034</td></tr>
+      <tr><td>ConFIG</td><td class="num">97.26 ± 0.30</td><td class="num">5.52 ± 0.37</td><td class="num">0.099 ± 0.036</td><td class="num"><b>0.803 ± 0.008</b></td><td class="num"><b>0.463 ± 0.011</b></td></tr>
+      <tr><td>GCR-PPO</td><td class="num">90.56 ± 8.57</td><td class="num"><b>5.27 ± 0.20</b></td><td class="num">2.446 ± 0.557</td><td class="num">0.767 ± 0.022</td><td class="num">0.322 ± 0.031</td></tr>
+      <tr style="background:#f5f5f5;"><td><b>SF-Push</b></td><td class="num"><b>99.56 ± 0.14</b></td><td class="num">5.49 ± 0.07</td><td class="num"><b>0.073 ± 0.025</b></td><td class="num">0.796 ± 0.023</td><td class="num">0.457 ± 0.019</td></tr>
+      <tr><td rowspan="4" style="vertical-align:middle;"><b>Hard<br><small class='has-text-grey'>3.6 m, 150&ndash;180&deg;</small></b></td><td>Weighted Sum</td><td class="num">34.92 ± 25.33</td><td class="num">11.47 ± 1.55</td><td class="num">2.142 ± 2.071</td><td class="num">0.750 ± 0.011</td><td class="num">0.309 ± 0.011</td></tr>
+      <tr><td>ConFIG</td><td class="num">40.76 ± 9.55</td><td class="num">9.99 ± 0.28</td><td class="num"><b>0.028 ± 0.011</b></td><td class="num">0.731 ± 0.029</td><td class="num">0.449 ± 0.012</td></tr>
+      <tr><td>GCR-PPO</td><td class="num">56.73 ± 34.58</td><td class="num">11.59 ± 0.93</td><td class="num">0.734 ± 0.293</td><td class="num">0.746 ± 0.039</td><td class="num">0.277 ± 0.012</td></tr>
+      <tr style="background:#f5f5f5;"><td><b>SF-Push</b></td><td class="num"><b>94.90 ± 1.69</b></td><td class="num"><b>9.07 ± 0.77</b></td><td class="num">0.042 ± 0.014</td><td class="num"><b>0.806 ± 0.019</b></td><td class="num"><b>0.462 ± 0.005</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h2 class="title is-4" style="margin-top:2.5rem;">Ablation</h2>
+    <p>
+      Each variant differs from SF-Push in one component: the direction rule, the step-length rule,
+      the gradient basis, or per-robot advantage normalization. Hard setting, same training budget,
+      3 evaluation seeds. Bold marks the best among variants that reach a nonzero success rate;
+      &ldquo;&mdash;&rdquo; means the variant never completed the task, so no completion time exists.
+    </p>
+    <div class="table-container">
+    <table class="table is-fullwidth is-narrow results-table">
+      <thead><tr><th>Variant</th><th class="num">Success (%) &uarr;</th><th class="num">Time (s) &darr;</th><th class="num">Unsafe prox. (%) &darr;</th><th class="num">Work balance &uarr;</th><th class="num">Min. dist. (m) &uarr;</th></tr></thead>
+      <tbody>
+      <tr><td>MGDA: raw direction, &#8214;d*&#8214; step</td><td class="num">0.00 ± 0.00</td><td class="num">&mdash;</td><td class="num">0.000 ± 0.000</td><td class="num">0.116 ± 0.020</td><td class="num">0.790 ± 0.029</td></tr>
+      <tr><td>SF direction, &#8214;d*&#8214; step</td><td class="num">0.00 ± 0.00</td><td class="num">&mdash;</td><td class="num">0.280 ± 0.072</td><td class="num">0.695 ± 0.001</td><td class="num">0.419 ± 0.020</td></tr>
+      <tr><td>SF direction, unit-norm step</td><td class="num">65.60 ± 2.72</td><td class="num">10.26 ± 0.07</td><td class="num">0.194 ± 0.059</td><td class="num">0.792 ± 0.008</td><td class="num">0.452 ± 0.010</td></tr>
+      <tr><td>SF direction, all-row step</td><td class="num">36.05 ± 1.38</td><td class="num">14.14 ± 0.28</td><td class="num"><b>0.007 ± 0.010</b></td><td class="num">0.739 ± 0.002</td><td class="num"><b>0.457 ± 0.080</b></td></tr>
+      <tr><td>ConFIG direction, task step</td><td class="num">44.12 ± 1.27</td><td class="num">11.58 ± 0.12</td><td class="num">0.103 ± 0.009</td><td class="num">0.742 ± 0.006</td><td class="num">0.375 ± 0.066</td></tr>
+      <tr><td>Joint 6-row basis, task step</td><td class="num">69.14 ± 1.24</td><td class="num">9.72 ± 0.08</td><td class="num">0.041 ± 0.012</td><td class="num">0.793 ± 0.009</td><td class="num">0.454 ± 0.018</td></tr>
+      <tr style="background:#f5f5f5;"><td><b>SF-Push</b></td><td class="num"><b>94.57 ± 0.25</b></td><td class="num"><b>9.54 ± 0.05</b></td><td class="num">0.039 ± 0.008</td><td class="num"><b>0.794 ± 0.008</b></td><td class="num">0.448 ± 0.025</td></tr>
+      <tr><td>SF-Push w/o per-robot adv. norm.</td><td class="num">0.00 ± 0.00</td><td class="num">&mdash;</td><td class="num">0.501 ± 0.205</td><td class="num">0.314 ± 0.020</td><td class="num">0.294 ± 0.022</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="is-size-7 has-text-grey">
+      SF-Push scores 94.57 here and 94.90 in the table above. That is deliberate, not a
+      discrepancy: the ablation is evaluated at a fixed 229,376,000 environment steps over 3
+      evaluation seeds of a single training run, while the main table uses a larger budget and
+      aggregates over independent training runs.
+    </p>
+  </div>
+</section>
+<!-- End results -->
+
+<!-- Method -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">Method</h2>
+    <img src="static/images/fig2_pipeline.png" alt="SF-Push training pipeline: per-(robot, objective) gradients, a scale-free consensus direction, and a step length set by the task gradient."/>
+    <p class="is-size-6">
+      Six reward terms feed a multi-head critic, and one PPO gradient per (robot, objective) pair
+      gives the rows. Two branches decide different things. <b>Where:</b> every row is unit-normalized
+      and the consensus direction is the minimum-norm point of their convex hull, so it depends only
+      on the angles between rows, not on reward scale. <b>How far:</b> the eight task rows are summed
+      raw. They meet where the task gradient is projected onto the consensus direction to set the step
+      length, and the result enters the unchanged MAPPO optimizer. Only the policy and local
+      observations are needed at deployment. Arrow lengths in stage 1 are log-compressed per-row
+      gradient norms from one representative update; the hull and projection sketches are schematic
+      and carry no numeric claim.
+    </p>
+  </div>
+</section>
+<!-- End method -->
+
+<!-- Hardware -->
+<section class="section hero">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">Hardware</h2>
+    <img src="static/images/fig3_hardware.jpg" alt="Three-waypoint S-curve on two Unitree Go1 robots: engagement and separation lanes for the weighted sum and for SF-Push."/>
+    <p class="is-size-6">
+      A three-waypoint S-curve spanning 4.45 m in a 3&times;5 m arena, one trial per policy, with
+      motion capture for poses and no fine-tuning from simulation. <b>Top:</b> weighted sum.
+      <b>Bottom:</b> SF-Push. The four lanes are robot 1 engaged, robot 2 engaged, both engaged, and
+      separation below the 0.5 m threshold. <i>Engaged</i> means the robot's oriented footprint is
+      within 0.10 m of the box &mdash; a proximity proxy for participation, as the robots carry no
+      contact-force sensing.
+    </p>
+    <div class="notification is-light">
+      <ul style="margin-top:0;">
+        <li>The weighted sum spends <b>2.8%</b> of the run inside the 0.5 m safety distance. SF-Push never enters it.</li>
+        <li>Per-segment engagement under the weighted sum swings hard: R1 96.7% vs R2 40.8% on segment 1, then R2 leads by 28 and 20 points on the two later segments. Under SF-Push the per-segment gap never exceeds <b>11 points</b>.</li>
+        <li>SF-Push finishes the course in <b>38.9 s</b> against <b>55.4 s</b>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- End hardware -->
+
+
+
+
+<!-- Video -->
+<section class="hero is-small is-light" id="video">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Supplementary video</h2>
+      <video controls muted loop playsinline preload="metadata" width="100%"
+             poster="static/images/fig3_hardware.jpg">
+        <source src="static/videos/supplementary.mp4" type="video/mp4">
+      </video>
+      <p class="is-size-6" style="margin-top:1rem;">
+        Time-synced hardware comparison. <b>Left:</b> weighted sum. <b>Right:</b> SF-Push. The current
+        target waypoint is drawn in green with a heading arrow and past waypoints greyed. The
+        &ldquo;R1 / R2 engaged&rdquo; badges light up when that robot is within 0.10 m of the box, a red
+        border appears whenever the separation drops below 0.5 m, and the four-lane timeline
+        underneath accumulates as the run proceeds. The running readouts are computed by the same
+        code as the hardware figure above, so they converge to 52% / 0.37 m and 88% / 0.60 m.
+      </p>
+    </div>
+  </div>
+</section>
+<!-- End video -->
+
+
+<!-- Beyond the paper -->
+<section class="section hero">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">Beyond the paper</h2>
+    <p class="has-text-centered has-text-grey">
+      Material that did not fit the page budget of the submission.
+    </p>
+
+    <h3 class="title is-5" style="margin-top:2rem;">Training environment</h3>
+    <div class="columns is-vcentered">
+      <div class="column is-half">
+        <img src="static/images/env_thumb.png" alt="Genesis simulation: two Go1 robots at a translucent box on the training floor, with the current box heading in red and the goal heading in green."/>
+      </div>
+      <div class="column is-half">
+        <p class="is-size-6">
+          Policies are trained and evaluated in Genesis. Two Go1 robots face a box on the training
+          floor; the red arrow is the current box heading and the green arrow the goal heading.
+          Deployment on hardware uses the policy as trained, with no fine-tuning.
+        </p>
+      </div>
+    </div>
+
+    <h3 class="title is-5" style="margin-top:2.5rem;">Simulation rollouts</h3>
+    <img src="static/images/rollout_strip.png" alt="Three-by-five filmstrip on the hard setting comparing weighted sum, ConFIG and SF-Push."/>
+    <p class="is-size-6">
+      Top-down filmstrip on the hard setting, each episode sampled at 0/25/50/75/100% of its length.
+      Weighted sum and ConFIG time out with the box short of the goal (final error 0.35 m / 148&deg;
+      and 1.18 m / 58&deg;); SF-Push reaches the goal pose in 8.0 s at 0.24 m / 16&deg;.
+    </p>
+    <p class="is-size-7 has-text-grey">
+      The success rates printed on this strip (43.2% / 44.8% / 95.8%) are pooled over the episodes of
+      one evaluation batch and are <i>not</i> the numbers in the table above, which aggregate over
+      independent training runs.
+    </p>
+
+    <h3 class="title is-5" style="margin-top:2.5rem;">Gradient-space analysis</h3>
+    <img src="static/images/alignment_panels.png" alt="Four panels of cosine-to-applied-update against environment steps, one line per reward group, for weighted sum, raw minimum norm, ConFIG and SF-Push."/>
+    <p class="is-size-6">
+      Cosine between each reward group's gradient and the update actually applied, over training.
+      <b>(a) Weighted sum:</b> spread 0.30, and safety is the starved row. <b>(b) Raw minimum norm:</b>
+      spread 0.60 with completion starved, which is why it never completes the task.
+      <b>(c) ConFIG</b> and <b>(d) SF-Push:</b> spread below 0.001 and 0.06.
+    </p>
+    <article class="message is-info">
+      <div class="message-body is-size-6">
+        Panels (c) and (d) look nearly identical, and that is the point: equal alignment does
+        <b>not</b> separate ConFIG from SF-Push. What separates them is the step-length rule, which is
+        what the ablation isolates.
+      </div>
+    </article>
+  </div>
+</section>
+<!-- End beyond the paper -->
+
+
+
+
+
+
+
+
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@misc{li2026sfpush,
+  title  = {SF-Push: Safe and Fair Pose-to-Pose Collaborative Transport
+            with Multiple Quadruped Robots},
+  author = {Li, Yuhao and Jose, Williard Joshua and Zhang, Hao},
+  year   = {2026},
+  note   = {Under review}
+}</code></pre>
+      <p class="is-size-7 has-text-grey" style="margin-top:1.5rem;">
+        Generative AI (Claude, GPT, Kimi K3, and DeepSeek) was used under the authors' direction to
+        draft and revise text in all sections and to write code for training, evaluation, and data
+        processing; all experiments, results, and claims are the authors' own.
+      </p>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
