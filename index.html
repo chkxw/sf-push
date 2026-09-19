@@ -472,21 +472,6 @@
       independent training runs.
     </p>
 
-    <h3 class="title is-5" style="margin-top:2.5rem;">Gradient-space analysis</h3>
-    <img src="static/images/alignment_panels.png" alt="Four panels of cosine-to-applied-update against environment steps, one line per reward group, for weighted sum, raw minimum norm, ConFIG and SF-Push."/>
-    <p class="is-size-6">
-      Cosine between each reward group's gradient and the update actually applied, over training.
-      <b>(a) Weighted sum:</b> spread 0.30, and safety is the starved row. <b>(b) Raw minimum norm:</b>
-      spread 0.60 with completion starved, which is why it never completes the task.
-      <b>(c) ConFIG</b> and <b>(d) SF-Push:</b> spread below 0.001 and 0.06.
-    </p>
-    <article class="message is-info">
-      <div class="message-body is-size-6">
-        Panels (c) and (d) look nearly identical, and that is the point: equal alignment does
-        <b>not</b> separate ConFIG from SF-Push. What separates them is the step-length rule, which is
-        what the ablation isolates.
-      </div>
-    </article>
   </div>
 </section>
 <!-- End beyond the paper -->
