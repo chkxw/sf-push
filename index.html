@@ -460,16 +460,20 @@
     </div>
 
     <h3 class="title is-5" style="margin-top:2.5rem;">Simulation rollouts</h3>
-    <img src="static/images/rollout_strip.png" alt="Three-by-five filmstrip on the hard setting comparing weighted sum, ConFIG and SF-Push."/>
+    <video controls muted loop playsinline width="100%">
+      <source src="static/videos/sim_rollout.mp4" type="video/mp4">
+    </video>
     <p class="is-size-6">
-      Top-down filmstrip on the hard setting, each episode sampled at 0/25/50/75/100% of its length.
-      Weighted sum and ConFIG time out with the box short of the goal (final error 0.35 m / 148&deg;
-      and 1.18 m / 58&deg;); SF-Push reaches the goal pose in 8.0 s at 0.24 m / 16&deg;.
+      The weighted sum and SF-Push on the same hard-setting task: identical goal pose, 152&deg; of
+      rotation to undo. The camera is orthographic and looks straight down, so the view is a true
+      plan view; the green outline is the goal pose with its 0.3 m tolerance, the orange trail is
+      where the box has been, and the bar beside each robot is its contact force, the quantity the
+      fairness objective is defined on. SF-Push reaches the goal in 10.7 s and then holds while the
+      weighted sum runs out its 20 s with the box at the goal but turned 136&deg; the wrong way.
     </p>
     <p class="is-size-7 has-text-grey">
-      The success rates printed on this strip (43.2% / 44.8% / 95.8%) are pooled over the episodes of
-      one evaluation batch and are <i>not</i> the numbers in the table above, which aggregate over
-      independent training runs.
+      One episode per policy, filmed in the run that produced the trajectory drawn on it. A single
+      pair is an illustration, not evidence: the numbers that are evidence are in the table above.
     </p>
 
   </div>
