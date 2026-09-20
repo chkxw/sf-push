@@ -254,7 +254,9 @@
           the safety distance and one of them stops contributing.
         </div>
       </article>
-      <img src="static/images/fig1_teaser.jpg" alt="Top-down composite of two Unitree Go1 robots pushing a box through waypoints under a weighted-sum reward, with panels showing inter-robot distance crossing the safety threshold and unbalanced per-robot engagement."/>
+      <!-- The teaser is nearly square, so an unconstrained width makes it as tall
+           as the viewport and it swamps everything under it. -->
+      <img src="static/images/fig1_teaser.jpg" style="max-width:640px;width:100%;display:block;margin:0 auto;" alt="Top-down composite of two Unitree Go1 robots pushing a box through waypoints under a weighted-sum reward, with panels showing inter-robot distance crossing the safety threshold and unbalanced per-robot engagement."/>
       <h2 class="subtitle has-text-centered">
         A hand-weighted scalar reward can complete the waypoint task while producing unsafe and
         unbalanced collaboration on hardware. <b>Left:</b> two Unitree Go1 robots push a box through
