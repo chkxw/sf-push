@@ -460,16 +460,15 @@
     </div>
 
     <h3 class="title is-5" style="margin-top:2.5rem;">Simulation rollouts</h3>
-    <video controls muted loop playsinline width="100%">
-      <source src="static/videos/sim_rollout.mp4" type="video/mp4">
-    </video>
+    <img src="static/images/sim_rollout_strip.png" alt="Three rendered rollouts on one hard-setting task: weighted sum, ConFIG and SF-Push, each sampled at five points."/>
     <p class="is-size-6">
-      The weighted sum and SF-Push on the same hard-setting task: identical goal pose, 152&deg; of
-      rotation to undo. The camera is orthographic and looks straight down, so the view is a true
-      plan view; the green outline is the goal pose with its 0.3 m tolerance, the orange trail is
-      where the box has been, and the bar beside each robot is its contact force, the quantity the
-      fairness objective is defined on. SF-Push reaches the goal in 10.7 s and then holds while the
-      weighted sum runs out its 20 s with the box at the goal but turned 136&deg; the wrong way.
+      The three methods on the same hard-setting task: identical goal pose, 152&deg; of rotation to
+      undo, each row sampled at 0/25/50/75/100% of its own episode. These are Genesis frames, filmed
+      through an orthographic top-down camera in the run that produced the trajectory drawn on them,
+      so the view is a true plan view with no perspective; the green outline is the goal pose with
+      its 0.3 m tolerance and the orange trail is where the box has been. The weighted sum gets the
+      box to the goal but 136&deg; short of the right heading, ConFIG stalls at 0.67 m / 68&deg;, and
+      SF-Push arrives in 10.7 s against the other two timing out at 20 s.
     </p>
     <p class="is-size-7 has-text-grey">
       One episode per policy, filmed in the run that produced the trajectory drawn on it. A single
